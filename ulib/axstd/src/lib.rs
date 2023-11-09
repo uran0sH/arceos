@@ -50,6 +50,8 @@
 #![feature(doc_cfg)]
 #![feature(doc_auto_cfg)]
 #![feature(ip_in_core)]
+#![feature(hashmap_internals)]
+#![feature(const_hash)]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -65,6 +67,7 @@ pub use core::{arch, cell, cmp, hint, marker, mem, ops, ptr, slice, str};
 mod macros;
 
 pub mod env;
+pub mod hash_map;
 pub mod io;
 pub mod os;
 pub mod process;
