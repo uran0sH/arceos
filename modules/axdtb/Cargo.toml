@@ -1,0 +1,13 @@
+[package]
+name = "axdtb"
+version = "0.1.0"
+edition = "2021"
+authors = ["Wenyu Huang <huangwenyuu@outlook.com>"]
+description = "Dtb library of ArceOS"
+license = "GPL-3.0-or-later OR Apache-2.0"
+homepage = "https://github.com/rcore-os/arceos"
+repository = "https://github.com/rcore-os/arceos/tree/main/modules/axdtb"
+documentation = "https://rcore-os.github.io/arceos/axdtb/index.html"
+
+[dependencies]
+fdt = "0.1.5"

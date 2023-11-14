@@ -309,6 +309,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "axdtb"
+version = "0.1.0"
+dependencies = [
+ "fdt",
+]
+
+[[package]]
 name = "axerrno"
 version = "0.1.0"
 dependencies = [
@@ -470,6 +477,7 @@ dependencies = [
  "axconfig",
  "axdisplay",
  "axdriver",
+ "axdtb",
  "axfs",
  "axhal",
  "axlog",
@@ -1014,6 +1022,12 @@ dependencies = [
  "bitflags 1.3.2",
  "log",
 ]
+
+[[package]]
+name = "fdt"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "784a4df722dc6267a04af36895398f59d21d07dce47232adf31ec0ff2fa45e67"
 
 [[package]]
 name = "flatten_objects"
