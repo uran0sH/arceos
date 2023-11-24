@@ -1,10 +1,12 @@
 #![cfg_attr(feature = "axstd", no_std)]
 #![cfg_attr(feature = "axstd", no_main)]
+#![feature(asm_const)]
 
 #[cfg(feature = "axstd")]
 use axstd::println;
 
 const PLASH_START: usize = 0x22000000;
+const RUN_START: usize = 0xffff_ffc0_8010_0000;
 
 #[cfg_attr(feature = "axstd", no_mangle)]
 fn main() {
@@ -22,8 +24,22 @@ fn main() {
 
         let code = unsafe { core::slice::from_raw_parts((PLASH_START + 2 + offset) as *const u8, apps_size) };
         println!("content: {:#x}", bytes_to_usize2(&code[..], apps_size));
+
+        let run_code = unsafe {
+            core::slice::from_raw_parts_mut(RUN_START as *mut u8, apps_size)
+        };
+        run_code.copy_from_slice(code);
+
         offset += 2 + apps_size;
         println!("Load payload ok!");
+
+        println!("Execute app ...");
+        // execute app
+        unsafe { core::arch::asm!("
+            li t2, {run_start}
+            jalr t2",
+            run_start = const RUN_START,
+        );}
     })
     
 }
