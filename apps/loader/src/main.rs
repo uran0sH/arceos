@@ -22,10 +22,12 @@ fn register_abi(num: usize, handle: usize) {
 
 fn abi_hello() {
     println!("[ABI:Hello] Hello, Apps!");
+    unsafe { core::arch::asm!("la   a7, {}", sym ABI_TABLE) }
 }
 
 fn abi_putchar(c: char) {
     println!("[ABI:Print] {c}");
+    unsafe { core::arch::asm!("la   a7, {}", sym ABI_TABLE) }
 }
 
 fn abi_terminate() {
@@ -47,7 +49,7 @@ fn main() {
         println!("Load payload ...");
 
         let code = unsafe { core::slice::from_raw_parts((PLASH_START + 2 + offset) as *const u8, apps_size) };
-        println!("content: {:#x}", bytes_to_usize2(&code[..], apps_size));
+        // println!("content: {:#x}", bytes_to_usize2(&code[..], apps_size));
 
         let run_code = unsafe {
             core::slice::from_raw_parts_mut(RUN_START as *mut u8, apps_size)
@@ -62,25 +64,18 @@ fn main() {
         register_abi(SYS_TERMINATE, abi_terminate as usize);
     
         println!("Execute app ...");
-        let arg0: u8 = b'A';
+        // let arg0: u8 = b'A';
     
         // execute app
         unsafe { core::arch::asm!("
-            li      t0, {abi_num}
-            slli    t0, t0, 3
-            la      t1, {abi_table}
-            add     t1, t1, t0
-            ld      t1, (t1)
-            jalr    t1
+            la      a7, {abi_table}
             li      t2, {run_start}
             jalr    t2
             j       .",
             run_start = const RUN_START,
             abi_table = sym ABI_TABLE,
-            //abi_num = const SYS_HELLO,
-            abi_num = const SYS_TERMINATE,
-            in("a0") arg0,
         )}
+
     
     })
     
